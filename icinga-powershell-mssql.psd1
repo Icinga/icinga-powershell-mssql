@@ -14,7 +14,8 @@
     NestedModules     = @(
         '.\plugins\Invoke-IcingaCheckMSSQLBackup.psm1',
         '.\provider\enums\Icinga_MSSQLProviderEnums.psm1',
-        '.\provider\mssql\Get-IcingaMSSQLBackupAgeStatus.psm1'
+        '.\provider\mssql\Get-IcingaMSSQLBackupAgeStatus.psm1',
+        '.\plugins\Invoke-IcingaCheckMSSQLHealth.psm1'
     )
     FunctionsToExport = @('*')
     CmdletsToExport   = @('*')
