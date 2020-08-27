@@ -118,8 +118,8 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         [string]$SqlHost            = "localhost",
         [int]$SqlPort               = 1433,
         [switch]$IntegratedSecurity = $FALSE,
-        [ValidateSet(0, 1, 2)]
         [switch]$NoPerfData,
+        [ValidateSet(0, 1, 2)]
         $Verbosity                  = 0
     )
 
