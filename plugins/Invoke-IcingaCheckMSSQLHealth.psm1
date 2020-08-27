@@ -84,7 +84,7 @@ function Invoke-IcingaCheckMSSQLHealth()
     foreach ($service in $MSSQLServices.Keys) {
         # Setup some basic variables for later handling and usage
         $ServiceObject = $MSSQLServices[$service];
-        $ServiceName   = Get-IcingaServiceCheckName -ServiceInput $ServiceObject.metadata.DisplayName -Service $service;
+        $ServiceName   = Get-IcingaServiceCheckName -ServiceInput $service -Service $ServiceObject;
         $StatusRaw     = $ServiceObject.configuration.Status.raw;
 
         # Now check if our instance name is either matching the exact service name of the instance name
