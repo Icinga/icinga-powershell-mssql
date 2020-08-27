@@ -12,7 +12,7 @@
         @{ModuleName = 'icinga-powershell-plugins'; ModuleVersion = '1.2.0' }
     )
     NestedModules     = @(
-
+        '.\plugins\Invoke-IcingaCheckMSSQLHealth.psm1'
     )
     FunctionsToExport = @('*')
     CmdletsToExport   = @('*')
