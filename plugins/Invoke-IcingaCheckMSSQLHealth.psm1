@@ -100,7 +100,7 @@ function Invoke-IcingaCheckMSSQLHealth()
     # Start the timer to store our connection time
     Start-IcingaTimer $MSSQLTimer;
     # Connect to MSSQL
-    $SqlCon = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -Port $SqlPort -SqlDatabase $SqlDatabase -IntegratedSecurity:$IntegratedSecurity;^
+    $SqlCon = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -Port $SqlPort -SqlDatabase $SqlDatabase -IntegratedSecurity:$IntegratedSecurity;
     # Stop the timer
     Stop-IcingaTimer $MSSQLTimer;
     # Close the connection as we no longer require it
