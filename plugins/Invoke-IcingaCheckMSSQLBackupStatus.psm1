@@ -62,9 +62,6 @@
 .PARAMETER IncludeDatabase
     Specifies the database or databases which will be checked. Leave empty to fetch metrics from
     all databases on the given system
-.PARAMETER SqlConnection
-    Use an already existing and established SQL object for query handling. Otherwise leave it empty and use the
-    authentication by username/password or integrate security
 .PARAMETER SqlUsername
     The username for connecting to the MSSQL database
 .PARAMETER SqlPassword
@@ -112,7 +109,6 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         [ValidateSet('Online', 'Restoring', 'Recovering', 'Recovering_Pending', 'Suspect', 'Emergency', 'Offline', 'Copying', 'Offline_Secondary')]
         $DatabaseStatusCritical     = 'Emergency',
         [array]$IncludeDatabase     = @(),
-        $SqlConnection              = $null,
         [string]$SqlUsername,
         [securestring]$SqlPassword,
         [string]$SqlHost            = "localhost",
@@ -128,16 +124,12 @@ function Invoke-IcingaCheckMSSQLBackupStatus
     $ExecutionTimeWarning  = ConvertTo-SecondsFromIcingaThresholds $ExecutionTimeWarning;
     $ExecutionTimeCritical = ConvertTo-SecondsFromIcingaThresholds $ExecutionTimeCritical;
 
-    $BackupSet    = Get-IcingaMSSQLBackupOverallStatus `
-                        -IncludeDatabase $IncludeDatabase `
-                        -SqlConnection $SqlConnection `
-                        -SqlUsername $SqlUsername `
-                        -SqlPassword $SqlPassword `
-                        -SqlHost $SqlHost `
-                        -SqlPort $SqlPort `
-                        -IntegratedSecurity:$IntegratedSecurity;
+    $SqlConnection         = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort;
+    $BackupSet             = Get-IcingaMSSQLBackupOverallStatus -SqlConnection $SqlConnection;
+    $InstanceName          = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
+    $CheckPackage          = New-IcingaCheckPackage -Name ([string]::Format('MSSQL Backup ({0})', $InstanceName)) -OperatorAnd -Verbose $Verbosity;
 
-    $CheckPackage = New-IcingaCheckPackage -Name 'MSSQL Backup' -OperatorAnd -Verbose $Verbosity;
+    Close-IcingaMSSQLConnection -SqlConnection $SqlConnection;
 
     foreach ($Backup in $BackupSet.Keys) {
         $BackupObject = $BackupSet[$Backup].backup;
@@ -150,11 +142,9 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         $DBPackage.AddCheck(
             (New-IcingaCheck -Name 'Average Size' -Unit 'b' -Value $BackupObject.AvgBackupSize).WarnOutOfRange($AvgBackupSizeWarning).CritOutOfRange($AvgBackupSizeCritical)
         );
-        if ($null -eq $BackupObject.LastBackupLogAge) {
-            $DBPackage.AddCheck(
-                (New-IcingaCheck -Name 'Log age' -Unit 's' -Value $BackupObject.LastBackupLogAge).WarnOutOfRange($LastBackupLogAgeWarning).CritOutOfRange($LastBackupLogAgeCritical)
-            );
-        }
+        $DBPackage.AddCheck(
+            (New-IcingaCheck -Name 'Log age' -Unit 's' -Value $BackupObject.LastBackupLogAge).WarnOutOfRange($LastBackupLogAgeWarning).CritOutOfRange($LastBackupLogAgeCritical)
+        );
         $DBPackage.AddCheck(
             (New-IcingaCheck -Name 'Age' -Unit 's' -Value $BackupObject.LastBackupAge).WarnOutOfRange($LastBackupAgeWarning).CritOutOfRange($LastBackupAgeCritical)
         );
@@ -175,5 +165,5 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         $CheckPackage.AddCheck($DBPackage);
     }
 
-    return (New-IcingaCheckResult -Name 'MSSQL Backup' -Check $CheckPackage -Compile);
+    return (New-IcingaCheckResult -Check $CheckPackage -Compile);
 }

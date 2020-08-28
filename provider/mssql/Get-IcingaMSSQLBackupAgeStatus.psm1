@@ -120,7 +120,7 @@
         if ($Entry.type -eq 'L') {
             $LastBackupLogAge = ($Entry.last_backup_hours * 60 * 60)
         } else {
-            $LastBackupLogAge = $null
+            $LastBackupLogAge = 0;
         }
 
         $TotalBackupSize = (Get-IcingaHashtableItem -Hashtable $LastBackup -Key 'TotalBackupSize' -NullValue 0) + $Entry.backup_size;
