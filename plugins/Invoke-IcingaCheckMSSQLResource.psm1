@@ -91,25 +91,27 @@ function Invoke-IcingaCheckMSSQLResource()
         [int]$Verbosity                   = 0
     );
 
-    $CheckPackage = New-IcingaCheckPackage `
-        -Name 'MSSQL Performance' `
-        -OperatorAnd `
-        -Verbose $Verbosity;
-
     [hashtable]$CheckPackages = @{};
 
+    $SqlConnection = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort;
+
     $PerfCounters = Get-IcingaMSSQLPerformanceCounter `
-        -SqlUsername $SqlUsername `
-        -SqlPassword $SqlPassword `
-        -SqlHost $SqlHost `
-        -SqlPort $SqlPort `
-        -SqlDatabase $SqlDatabase `
-        -IntegratedSecurity:$IntegratedSecurity `
+        -SqlConnection $SqlConnection `
         -PerformanceCounters @(
-        '\SQLServer:Buffer Manager\page life expectancy',
-        '\SQLServer:Buffer Manager\Buffer cache hit ratio',
-        '\SQLServer:Latches\Average Latch Wait Time (ms)'
-    );
+            '\SQLServer:Buffer Manager\page life expectancy',
+            '\SQLServer:Buffer Manager\Buffer cache hit ratio',
+            '\SQLServer:Latches\Average Latch Wait Time (ms)'
+        );
+
+    $InstanceName = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
+
+    # Close the connection as we no longer require it
+    Close-IcingaMSSQLConnection -SqlConnection $SqlConnection;
+
+    $CheckPackage = New-IcingaCheckPackage `
+        -Name ([string]::Format('MSSQL Performance ({0})', $InstanceName)) `
+        -OperatorAnd `
+        -Verbose $Verbosity;
 
     foreach ($Entry in $PerfCounters) {
         $FullName = Get-IcingaMSSQLPerfCounterPathFromDBObject -DBObject $Entry;
