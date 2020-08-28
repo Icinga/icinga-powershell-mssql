@@ -72,21 +72,23 @@ function Invoke-IcingaCheckMSSQLPerfCounter()
         [int]$Verbosity             = 0
     );
 
-    $CheckPackage = New-IcingaCheckPackage `
-        -Name 'MSSQL Performance Counter' `
-        -OperatorAnd `
-        -Verbose $Verbosity;
-
     [hashtable]$CheckPackages = @{};
 
+    $SqlConnection = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort;
+
     $PerfCounters = Get-IcingaMSSQLPerformanceCounter `
-        -SqlUsername $SqlUsername `
-        -SqlPassword $SqlPassword `
-        -SqlHost $SqlHost `
-        -SqlPort $SqlPort `
-        -SqlDatabase $SqlDatabase `
-        -IntegratedSecurity:$IntegratedSecurity `
+        -SqlConnection $SqlConnection `
         -PerformanceCounters $PerformanceCounter;
+
+    $InstanceName = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
+
+    # Close the connection as we no longer require it
+    Close-IcingaMSSQLConnection -SqlConnection $SqlConnection;
+
+    $CheckPackage = New-IcingaCheckPackage `
+        -Name ([string]::Format('MSSQL Performance Counter ({0})', $InstanceName)) `
+        -OperatorAnd `
+        -Verbose $Verbosity;
 
     foreach ($Entry in $PerfCounters) {
         $FullName = Get-IcingaMSSQLPerfCounterPathFromDBObject -DBObject $Entry;
