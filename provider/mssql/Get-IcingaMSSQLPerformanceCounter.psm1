@@ -71,7 +71,7 @@ function Get-IcingaMSSQLPerformanceCounter
     [bool]$NewSqlConnection = $FALSE;
 
     if ($null -eq $SqlConnection) {
-        $SqlConnection = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity;
+        $SqlConnection = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort;
         $NewSqlConnection = $TRUE;
     }
 
