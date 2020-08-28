@@ -75,10 +75,41 @@ function Invoke-IcingaCheckMSSQLHealth()
     $Warning  = ConvertTo-SecondsFromIcingaThresholds $Warning;
     $Critical = ConvertTo-SecondsFromIcingaThresholds $Critical;
 
+    # Create a unique name for our timer
+    [string]$MSSQLTimer = [string]::Format('MSSQL_Timer_{0}', $Instance);
+    # Start the timer to store our connection time
+    Start-IcingaTimer $MSSQLTimer;
+    # Connect to MSSQL
+    $SqlConnection     = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort -TestConnection;
+    # Stop the timer
+    Stop-IcingaTimer $MSSQLTimer;
+
+    $InstanceName      = '';
+    $MSSQLConnCheck    = $null;
+
+    if ($null -ne $SqlConnection) {
+        $InstanceName      = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
+        # Build a check based on our connection time
+        $MSSQLConnCheck = New-IcingaCheck -Name 'Connection Time' -Value (Get-IcingaTimer $MSSQLTimer).ElapsedMilliseconds -Unit 'ms';
+        $MSSQLConnCheck.WarnOutOfRange($Warning).CritOutOfRange($Critical) | Out-Null;
+
+        if ([string]::IsNullOrEmpty($Instance)) {
+            $Instance = $InstanceName;
+        }
+    } else {
+        # Build a check based on our connection time
+        $MSSQLConnCheck = New-IcingaCheck -Name 'DB Connection error' -Value $TRUE;
+        $MSSQLConnCheck.SetCritical() | Out-Null;
+    }
+
+    # Close the connection as we no longer require it
+    Close-IcingaMSSQLConnection -SqlConnection $SqlConnection;
+
     # Create a check package to store our checks
-    $MSSQLCheckPackage = New-IcingaCheckPackage -Name 'MSSQL Health' -OperatorAnd -Verbose $Verbosity;
+    $MSSQLCheckPackage = New-IcingaCheckPackage -Name ([string]::Format('MSSQL Health ({0})', $InstanceName)) -OperatorAnd -Verbose $Verbosity;
+
     # Fetch all services for MSSQL which are mandatory
-    $MSSQLServices     = Get-IcingaServices 'MSSQLSERVER', 'MSSQL$*';
+    $MSSQLServices     = Get-IcingaServices 'MSSQLSERVER', 'MSSQL$*', $InstanceName;
 
     # Now loop all services we found
     foreach ($service in $MSSQLServices.Keys) {
@@ -95,21 +126,7 @@ function Invoke-IcingaCheckMSSQLHealth()
         }
     }
 
-    # Create a unique name for our timer
-    [string]$MSSQLTimer = [string]::Format('MSSQL_Timer_{0}', $Instance);
-    # Start the timer to store our connection time
-    Start-IcingaTimer $MSSQLTimer;
-    # Connect to MSSQL
-    $SqlCon = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -Port $SqlPort -SqlDatabase $SqlDatabase -IntegratedSecurity:$IntegratedSecurity;
-    # Stop the timer
-    Stop-IcingaTimer $MSSQLTimer;
-    # Close the connection as we no longer require it
-    Close-IcingaMSSQLConnection -SqlConnection $SqlCon;
-
-    # Build a check based on our connection time
-    $ConnectionTime = New-IcingaCheck -Name 'Connection Time' -Value (Get-IcingaTimer $MSSQLTimer).ElapsedMilliseconds -Unit 'ms';
-    $ConnectionTime.WarnOutOfRange($Warning).CritOutOfRange($Critical) | Out-Null;
-    $MSSQLCheckPackage.AddCheck($ConnectionTime);
+    $MSSQLCheckPackage.AddCheck($MSSQLConnCheck);
 
     return (New-IcingaCheckResult -Check $MSSQLCheckPackage -Compile -NoPerfData $NoPerfData)
 }
