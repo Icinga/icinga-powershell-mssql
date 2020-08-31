@@ -1,4 +1,4 @@
-<#
+ <#
 .SYNOPSIS
     MSSQL plugin which checks for page life expectancy, buffer cache hit ratio',
     average latch wait time (ms) Performance Counters
@@ -37,6 +37,10 @@
     Warning threshold for the Average Latch Wait Time (ms) for latch requests that had to wait.
 .PARAMETER AverageLatchWaitTimeCritical
     Critical threshold for the Average Latch Wait Time (ms) for latch requests that had to wait.
+.PARAMETER AverageLockWaitTimeWarning
+    Warning threshold for the Total Average Lock Wait Time (ms) for each lock request that resulted in a wait.
+.PARAMETER AverageLockWaitTimeCritical
+    Critical threshold for the Total Average Lock Wait Time (ms) for each lock request that resulted in a wait.
 .PARAMETER PerformanceCounter
     List of Performance Counters specified by their full path (example '\SQLServer:Buffer Manager\Buffer cache hit ratio')
     to fetch information for
@@ -78,6 +82,8 @@ function Invoke-IcingaCheckMSSQLResource()
         $PageLifeExpectancyWarning        = $null,
         $AverageLatchWaitTimeCritical     = $null,
         $AverageLatchWaitTimeWarning      = $null,
+        $AverageLockWaitTimeCritical      = $null,
+        $AverageLockWaitTimeWarning       = $null,
         $BufferCacheHitRatioCritical      = $null,
         $BufferCacheHitRatioWarning       = $null,
         [string]$SqlUsername,
@@ -100,7 +106,8 @@ function Invoke-IcingaCheckMSSQLResource()
         -PerformanceCounters @(
             '\SQLServer:Buffer Manager\page life expectancy',
             '\SQLServer:Buffer Manager\Buffer cache hit ratio',
-            '\SQLServer:Latches\Average Latch Wait Time (ms)'
+            '\SQLServer:Latches\Average Latch Wait Time (ms)',
+            '\SQLServer:Locks(_Total)\Average Wait Time (ms)'
         );
 
     $InstanceName = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
@@ -133,6 +140,10 @@ function Invoke-IcingaCheckMSSQLResource()
             };
             '\SQLServer:Latches\Average Latch Wait Time (ms)' {
                 $Check = (New-IcingaCheck -Name $Entry.counter_name -Value $Entry.cntr_value).WarnOutOfRange($AverageLatchWaitTimeWarning).CritOutOfRange($AverageLatchWaitTimeCritical);
+                break;
+            };
+            '\_Total(SQLServer:Locks)\Average Wait Time (ms)' {
+                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value $Entry.cntr_value).WarnOutOfRange($AverageLockWaitTimeWarning).CritOutOfRange($AverageLockWaitTimeCritical);
                 break;
             }
         }
