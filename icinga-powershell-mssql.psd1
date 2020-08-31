@@ -12,12 +12,12 @@
         @{ModuleName = 'icinga-powershell-plugins'; ModuleVersion = '1.2.0' }
     )
     NestedModules     = @(
-        '.\plugins\Invoke-IcingaCheckMSSQLBackup.psm1',
+        '.\plugins\Invoke-IcingaCheckMSSQLBackupStatus.psm1',
         '.\plugins\Invoke-IcingaCheckMSSQLHealth.psm1',
         '.\plugins\Invoke-IcingaCheckMSSQLPerfCounter.psm1',
         '.\plugins\Invoke-IcingaCheckMSSQLResource.psm1'
         '.\provider\enums\Icinga_MSSQLProviderEnums.psm1',
-        '.\provider\mssql\Get-IcingaMSSQLBackupAgeStatus.psm1',
+        '.\provider\mssql\Get-IcingaMSSQLBackupOverallStatus.psm1',
         '.\provider\mssql\Get-IcingaMSSQLPerfCounterNameFromDBObject.psm1',
         '.\provider\mssql\Get-IcingaMSSQLPerfCounterPathFromDBObject.psm1',
         '.\provider\mssql\Get-IcingaMSSQLPerformanceCounter.psm1'
