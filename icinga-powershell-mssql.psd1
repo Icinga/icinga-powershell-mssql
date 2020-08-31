@@ -15,7 +15,7 @@
         '.\plugins\Invoke-IcingaCheckMSSQLBackupStatus.psm1',
         '.\plugins\Invoke-IcingaCheckMSSQLHealth.psm1',
         '.\plugins\Invoke-IcingaCheckMSSQLPerfCounter.psm1',
-        '.\plugins\Invoke-IcingaCheckMSSQLResource.psm1'
+        '.\plugins\Invoke-IcingaCheckMSSQLResource.psm1',
         '.\provider\enums\Icinga_MSSQLProviderEnums.psm1',
         '.\provider\mssql\Get-IcingaMSSQLBackupOverallStatus.psm1',
         '.\provider\mssql\Get-IcingaMSSQLPerfCounterNameFromDBObject.psm1',
