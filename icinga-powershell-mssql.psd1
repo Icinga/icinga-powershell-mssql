@@ -1,7 +1,7 @@
 @{
     ModuleVersion     = '1.0.0'
     GUID              = '8441b44a-e105-42b7-82c9-8ecf69c13b8b'
-    ModuleToProcess   = 'icinga-powershell-mssql.psm1'
+    # ModuleToProcess   = 'icinga-powershell-mssql.psm1'
     Author            = 'Lord Hepipud, pdorschner'
     CompanyName       = 'Icinga GmbH'
     Copyright         = '(c) 2020 Icinga GmbH | GPLv2'
@@ -15,7 +15,7 @@
         '.\plugins\Invoke-IcingaCheckMSSQLBackupStatus.psm1',
         '.\plugins\Invoke-IcingaCheckMSSQLHealth.psm1',
         '.\plugins\Invoke-IcingaCheckMSSQLPerfCounter.psm1',
-        '.\plugins\Invoke-IcingaCheckMSSQLResource.psm1'
+        '.\plugins\Invoke-IcingaCheckMSSQLResource.psm1',
         '.\provider\enums\Icinga_MSSQLProviderEnums.psm1',
         '.\provider\mssql\Get-IcingaMSSQLBackupOverallStatus.psm1',
         '.\provider\mssql\Get-IcingaMSSQLPerfCounterNameFromDBObject.psm1',
