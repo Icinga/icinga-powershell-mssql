@@ -126,16 +126,16 @@
         $TotalBackupSize = (Get-IcingaHashtableItem -Hashtable $LastBackup -Key 'TotalBackupSize' -NullValue 0) + $Entry.backup_size;
 
         [hashtable]$CurrentBackup = @{
-            'TotalBackupSize'  = $TotalBackupSize;
-            'AvgBackupSize'    = ($TotalBackupSize / ([Math]::Max($BackupHistory.Count, 1)));
+            'TotalBackupSize'  = ([long]$TotalBackupSize);
+            'AvgBackupSize'    = ([math]::round([decimal](([long]$TotalBackupSize) / ([Math]::Max($BackupHistory.Count, 1))), 4));
             'UUID'             = $Entry.backup_set_uuid;
             'StartDate'        = $Entry.backup_start_date;
             'FinishDate'       = $Entry.backup_finish_date;
             'IsDamaged'        = $Entry.is_damaged;
             'Type'             = $Entry.type;
-            'LastBackupLogAge' = $LastBackupLogAge;
-            'LastBackupAge'    = ($Entry.last_backup_hours * 60 * 60);
-            'ExecutionTime'    = ($Entry.last_backup_duration_min * 60);
+            'LastBackupLogAge' = [long]$LastBackupLogAge;
+            'LastBackupAge'    = (([long]$Entry.last_backup_hours) * 60 * 60);
+            'ExecutionTime'    = (([long]$Entry.last_backup_duration_min) * 60);
             'Location'         = $Entry.physical_device_name;
             'Drive'            = $BackupDrive;
             'Status'           = $Entry.state;
