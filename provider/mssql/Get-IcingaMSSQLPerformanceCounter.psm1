@@ -133,5 +133,21 @@ function Get-IcingaMSSQLPerformanceCounter
         Close-IcingaMSSQLConnection -SqlConnection $SqlConnection;
     }
 
-    return $Data;
+    [array]$CounterResult = @();
+
+    foreach ($counter in $Data) {
+        [decimal]$CounterValue = 0;
+        if ((Test-Numeric $counter.cntr_value)) {
+            $CounterValue = ([math]::round([decimal]$counter.cntr_value, 6));
+        }
+
+        $CounterResult += @{
+            'instance_name' = $counter.instance_name;
+            'object_name'   = $counter.object_name;
+            'counter_name'  = $counter.counter_name;
+            'cntr_value'    = $CounterValue;
+        }
+    }
+
+    return $CounterResult;
 }
