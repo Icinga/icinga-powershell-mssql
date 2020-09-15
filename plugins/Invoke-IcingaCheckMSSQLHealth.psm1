@@ -78,7 +78,7 @@ function Invoke-IcingaCheckMSSQLHealth()
     # Create a unique name for our timer
     [string]$MSSQLTimer = [string]::Format('MSSQL_Timer_{0}', $Instance);
     # Start the timer to store our connection time
-    Start-IcingaTimer $MSSQLTimer;
+    Start-IcingaTimer $MSSQLTimer | Out-Null;
     # Connect to MSSQL
     $SqlConnection     = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort -SqlDatabase $SqlDatabase -TestConnection;
     # Stop the timer
@@ -128,5 +128,5 @@ function Invoke-IcingaCheckMSSQLHealth()
 
     $MSSQLCheckPackage.AddCheck($MSSQLConnCheck);
 
-    return (New-IcingaCheckResult -Check $MSSQLCheckPackage -Compile -NoPerfData $NoPerfData)
+    return (New-IcingaCheckResult -Check $MSSQLCheckPackage -Compile -NoPerfData $NoPerfData);
 }
