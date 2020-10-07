@@ -74,21 +74,21 @@
 function Invoke-IcingaCheckMSSQLResource()
 {
     param (
-        $PageLifeExpectancyCritical       = $null,
-        $PageLifeExpectancyWarning        = $null,
-        $AverageLatchWaitTimeCritical     = $null,
-        $AverageLatchWaitTimeWarning      = $null,
-        $BufferCacheHitRatioCritical      = $null,
-        $BufferCacheHitRatioWarning       = $null,
+        $PageLifeExpectancyCritical   = $null,
+        $PageLifeExpectancyWarning    = $null,
+        $AverageLatchWaitTimeCritical = $null,
+        $AverageLatchWaitTimeWarning  = $null,
+        $BufferCacheHitRatioCritical  = $null,
+        $BufferCacheHitRatioWarning   = $null,
         [string]$SqlUsername,
         [securestring]$SqlPassword,
-        [string]$SqlHost                  = "localhost",
-        [int]$SqlPort                     = 1433,
+        [string]$SqlHost              = "localhost",
+        [int]$SqlPort                 = 1433,
         [string]$SqlDatabase,
-        [switch]$IntegratedSecurity       = $FALSE,
+        [switch]$IntegratedSecurity   = $FALSE,
         [switch]$NoPerfData,
         [ValidateSet(0, 1, 2)]
-        [int]$Verbosity                   = 0
+        [int]$Verbosity               = 0
     );
 
     [hashtable]$CheckPackages = @{};
@@ -100,8 +100,26 @@ function Invoke-IcingaCheckMSSQLResource()
         -PerformanceCounters @(
             '\SQLServer:Buffer Manager\page life expectancy',
             '\SQLServer:Buffer Manager\Buffer cache hit ratio',
-            '\SQLServer:Latches\Average Latch Wait Time (ms)'
+            '\SQLServer:Latches\Average Latch Wait Time (ms)',
+            '\SQLServer:Buffer Manager\Buffer cache hit ratio base',
+            '\SQLServer:Latches\Average Latch Wait Time Base'
         );
+
+    [decimal]$BufferRatioBase   = 1;
+    [decimal]$LatchWaitTimeBase = 1;
+
+    foreach ($entry in $PerfCounters) {
+        switch ($entry.counter_name) {
+            'Buffer cache hit ratio base' {
+                $BufferRatioBase = $entry.cntr_value;
+                break;
+            };
+            'Average Latch Wait Time Base' {
+                $LatchWaitTimeBase = $entry.cntr_value;
+                break;
+            };
+        }
+    }
 
     $InstanceName = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
 
@@ -116,11 +134,6 @@ function Invoke-IcingaCheckMSSQLResource()
     foreach ($Entry in $PerfCounters) {
         $FullName = Get-IcingaMSSQLPerfCounterPathFromDBObject -DBObject $Entry;
 
-        Add-IcingaHashtableItem `
-            -Hashtable $CheckPackages `
-            -Key ($Entry.object_name) `
-            -Value (New-IcingaCheckPackage -Name $Entry.object_name -OperatorAnd -Verbose $Verbosity) | Out-Null;
-
         <# https://docs.microsoft.com/en-us/sql/relational-databases/performance-monitor/sql-server-buffer-manager-object?view=sql-server-ver15 #>
         switch ($FullName) {
             '\SQLServer:Buffer Manager\page life expectancy' {
@@ -128,14 +141,24 @@ function Invoke-IcingaCheckMSSQLResource()
                 break;
             };
             '\SQLServer:Buffer Manager\Buffer cache hit ratio' {
-                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value $Entry.cntr_value).WarnOutOfRange($BufferCacheHitRatioWarning).CritOutOfRange($BufferCacheHitRatioCritical);
+                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value (($Entry.cntr_value * 1.0 / $BufferRatioBase) * 100) -Unit '%').WarnOutOfRange($BufferCacheHitRatioWarning).CritOutOfRange($BufferCacheHitRatioCritical);
                 break;
             };
             '\SQLServer:Latches\Average Latch Wait Time (ms)' {
-                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value $Entry.cntr_value).WarnOutOfRange($AverageLatchWaitTimeWarning).CritOutOfRange($AverageLatchWaitTimeCritical);
+                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value ($Entry.cntr_value / $LatchWaitTimeBase) -Unit 'ms').WarnOutOfRange($AverageLatchWaitTimeWarning).CritOutOfRange($AverageLatchWaitTimeCritical);
                 break;
-            }
+            };
         }
+
+        # Do not add these metrics to our check package of create checks for them
+        if ($FullName -eq '\SQLServer:Buffer Manager\Buffer cache hit ratio base' -Or $FullName -eq '\SQLServer:Latches\Average Latch Wait Time Base') {
+            continue;
+        }
+
+        Add-IcingaHashtableItem `
+            -Hashtable $CheckPackages `
+            -Key ($Entry.object_name) `
+            -Value (New-IcingaCheckPackage -Name $Entry.object_name -OperatorAnd -Verbose $Verbosity) | Out-Null;
 
         if ($null -ne $Check) {
             # The check package for our counter category
