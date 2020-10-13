@@ -7,7 +7,15 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
+## 1.1.0 (pending)
+
+[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/2?closed=1)
+
+*No changes yet*
+
 ## 1.0.0 (2020-10-13)
+
+[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/1?closed=1)
 
 ### Notes
 
