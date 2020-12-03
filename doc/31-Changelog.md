@@ -11,7 +11,9 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/2?closed=1)
 
-*No changes yet*
+### Enhancements
+
+* [#25](https://github.com/Icinga/icinga-powershell-mssql/pull/25) Adds Icinga 2 and Icinga Director pre-compiled configuration files and updates documentation
 
 ## 1.0.0 (2020-10-13)
 

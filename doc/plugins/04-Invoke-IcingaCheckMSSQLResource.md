@@ -10,6 +10,10 @@ MSSQL plugin which checks for page life expectancy, buffer cache hit ratio',
 average latch wait time (ms) Performance Counters
 More Information on https://github.com/Icinga/icinga-powershell-mssql
 
+## Permissions
+
+No special permissions required.
+
 ## Arguments
 
 | Argument | Type | Required | Default | Description |
