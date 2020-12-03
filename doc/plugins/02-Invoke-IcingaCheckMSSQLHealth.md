@@ -10,6 +10,10 @@ The plugin will return CRITICAL in case MSSQL instance services are not running 
 WARNING or CRITICAL if the connection time is not matching your set thresholds
 More Information on https://github.com/Icinga/icinga-powershell-plugins
 
+## Permissions
+
+No special permissions required.
+
 ## Arguments
 
 | Argument | Type | Required | Default | Description |

@@ -10,6 +10,10 @@ Checks specified Performance Counter inside the MSSQL database by fetching
 counters by a given name and compares them to input thresholds
 More Information on https://github.com/Icinga/icinga-powershell-mssql
 
+## Permissions
+
+No special permissions required.
+
 ## Arguments
 
 | Argument | Type | Required | Default | Description |
