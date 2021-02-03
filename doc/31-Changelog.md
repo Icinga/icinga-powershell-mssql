@@ -7,6 +7,22 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
+## 1.1.0 (pending)
+
+[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/2?closed=1)
+
+## 1.0.1 (2021-02-04)
+
+[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/3?closed=1)
+
+### Bugfixes
+
+* [27](https://github.com/Icinga/icinga-powershell-mssql/pull/27) Fixes broken Icinga 2 plain conf files
+
+### Enhancements
+
+* [#25](https://github.com/Icinga/icinga-powershell-mssql/pull/25) Adds Icinga 2 and Icinga Director pre-compiled configuration files and updates documentation
+
 ## 1.0.0 (2020-10-13)
 
 ### Notes
