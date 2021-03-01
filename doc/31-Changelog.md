@@ -7,9 +7,17 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
-## 1.1.0 (pending)
+## 1.1.0 (2021-03-02)
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/2?closed=1)
+
+### Breaking Changes
+
+MSSQL v1.1.0 ships with new pre-compiled configuration for Icinga for Windows v1.4.0. Please ensure to update your entire environment before updating MSSQL plugins for CheckCommand configuration
+
+### Enhancements
+
+* [#28](https://github.com/Icinga/icinga-powershell-mssql/pull/28) Updates Icinga config and dependency to v1.4.0
 
 ## 1.0.1 (2021-02-04)
 

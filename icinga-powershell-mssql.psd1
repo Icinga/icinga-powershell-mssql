@@ -4,12 +4,12 @@
     # ModuleToProcess   = 'icinga-powershell-mssql.psm1'
     Author            = 'Lord Hepipud, pdorschner'
     CompanyName       = 'Icinga GmbH'
-    Copyright         = '(c) 2020 Icinga GmbH | GPLv2'
+    Copyright         = '(c) 2021 Icinga GmbH | GPLv2'
     Description       = 'A collection of Icinga PowerShell MSSQL plugins for the Icinga PowerShell Framework'
     PowerShellVersion = '4.0'
     RequiredModules   = @(
-        @{ModuleName = 'icinga-powershell-framework'; ModuleVersion = '1.2.0' },
-        @{ModuleName = 'icinga-powershell-plugins'; ModuleVersion = '1.2.0' }
+        @{ModuleName = 'icinga-powershell-framework'; ModuleVersion = '1.4.0' },
+        @{ModuleName = 'icinga-powershell-plugins'; ModuleVersion = '1.4.0' }
     )
     NestedModules     = @(
         '.\plugins\Invoke-IcingaCheckMSSQLBackupStatus.psm1',
