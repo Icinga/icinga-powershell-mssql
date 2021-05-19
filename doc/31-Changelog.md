@@ -11,6 +11,10 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/4?closed=1)
 
+### Enhancements
+
+* [31](https://github.com/Icinga/icinga-powershell-mssql/pull/31) Updates plugins and configuration files for Icinga for Windows v1.5.0
+
 ### Bugfixes
 
 * [32](https://github.com/Icinga/icinga-powershell-mssql/issues/32) Fixes `MSSQLSERVER` service not being added by default for `Invoke-IcingaCheckMSSQLHealth`

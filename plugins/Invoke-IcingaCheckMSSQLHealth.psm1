@@ -46,6 +46,7 @@
     0 (default): Only service checks/packages with state not OK will be printed
     1: Only services with not OK will be printed including OK checks of affected check packages including Package config
     2: Everything will be printed regardless of the check state
+    3: Identical to Verbose 2, but prints in addition the check package configuration e.g (All must be [OK])
 .INPUTS
     System.Array
 .OUTPUTS
@@ -68,12 +69,9 @@ function Invoke-IcingaCheckMSSQLHealth()
         [string]$SqlDatabase,
         [switch]$IntegratedSecurity = $FALSE,
         [switch]$NoPerfData,
-        [ValidateSet(0, 1, 2)]
+        [ValidateSet(0, 1, 2, 3)]
         [int]$Verbosity             = 0
     );
-
-    $Warning  = ConvertTo-SecondsFromIcingaThresholds $Warning;
-    $Critical = ConvertTo-SecondsFromIcingaThresholds $Critical;
 
     # Create a unique name for our timer
     [string]$MSSQLTimer = [string]::Format('MSSQL_Timer_{0}', $Instance);
