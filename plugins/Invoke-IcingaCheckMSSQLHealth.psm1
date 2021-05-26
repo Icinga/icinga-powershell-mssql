@@ -119,7 +119,7 @@ function Invoke-IcingaCheckMSSQLHealth()
         $StatusRaw     = $ServiceObject.configuration.Status.raw;
 
         # Now check if our instance name is either matching the exact service name of the instance name
-        if ($service -eq $Instance -Or $service -eq ([string]::Format('MSSQL${0}', $Instance))) {
+        if ($service -eq 'MSSQLSERVER' -Or $service -eq $Instance -Or $service -eq ([string]::Format('MSSQL${0}', $Instance))) {
             $ServiceCheck = New-IcingaCheck -Name $ServiceName -Value $StatusRaw -ObjectExists $service -Translation $ProviderEnums.ServiceStatusName;
             $ServiceCheck.CritIfNotMatch($ProviderEnums.ServiceStatus.Running) | Out-Null;
             $MSSQLCheckPackage.AddCheck($ServiceCheck);

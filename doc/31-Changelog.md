@@ -7,6 +7,14 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
+## 1.2.0 (2021-06-02)
+
+[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/4?closed=1)
+
+### Bugfixes
+
+* [32](https://github.com/Icinga/icinga-powershell-mssql/issues/32) Fixes `MSSQLSERVER` service not being added by default for `Invoke-IcingaCheckMSSQLHealth`
+
 ## 1.1.0 (2021-03-02)
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/2?closed=1)
