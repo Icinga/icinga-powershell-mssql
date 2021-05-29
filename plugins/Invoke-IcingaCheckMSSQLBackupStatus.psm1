@@ -82,6 +82,7 @@
     0 (default): Only service checks/packages with state not OK will be printed
     1: Only services with not OK will be printed including OK checks of affected check packages including Package config
     2: Everything will be printed regardless of the check state
+    3: Identical to Verbose 2, but prints in addition the check package configuration e.g (All must be [OK])
 .INPUTS
     System.Array
 .OUTPUTS
@@ -115,14 +116,9 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         [int]$SqlPort               = 1433,
         [switch]$IntegratedSecurity = $FALSE,
         [switch]$NoPerfData,
-        [ValidateSet(0, 1, 2)]
+        [ValidateSet(0, 1, 2, 3)]
         $Verbosity                  = 0
     )
-
-    $LastBackupAgeWarning  = ConvertTo-SecondsFromIcingaThresholds $LastBackupAgeWarning;
-    $LastBackupAgeCritical = ConvertTo-SecondsFromIcingaThresholds $LastBackupAgeCritical;
-    $ExecutionTimeWarning  = ConvertTo-SecondsFromIcingaThresholds $ExecutionTimeWarning;
-    $ExecutionTimeCritical = ConvertTo-SecondsFromIcingaThresholds $ExecutionTimeCritical;
 
     $SqlConnection         = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort;
     $BackupSet             = Get-IcingaMSSQLBackupOverallStatus -SqlConnection $SqlConnection;
@@ -149,17 +145,21 @@ function Invoke-IcingaCheckMSSQLBackupStatus
             (New-IcingaCheck -Name 'Age' -Unit 's' -Value $BackupObject.LastBackupAge).WarnOutOfRange($LastBackupAgeWarning).CritOutOfRange($LastBackupAgeCritical)
         );
         $DBPackage.AddCheck(
-            (New-IcingaCheck `
-                -Name 'Execution Time' `
-                -Unit 's' `
-                -Value $BackupObject.ExecutionTime).WarnOutOfRange($ExecutionTimeWarning).CritOutOfRange($ExecutionTimeCritical)
+            (
+                New-IcingaCheck `
+                    -Name 'Execution Time' `
+                    -Unit 's' `
+                    -Value $BackupObject.ExecutionTime
+            ).WarnOutOfRange($ExecutionTimeWarning).CritOutOfRange($ExecutionTimeCritical)
         );
         $DBPackage.AddCheck(
-            (New-IcingaCheck `
-                -Name 'Status' `
-                -Value $BackupObject.Status `
-                -Translation $MSSQLProviderEnums.MSSQLDatabaseState `
-                -ObjectExists $BackupObject.Status).WarnIfMatch($MSSQLProviderEnums.MSSQLDatabaseStateName[$DatabaseStatusWarning]).CritIfMatch($MSSQLProviderEnums.MSSQLDatabaseStateName[$DatabaseStatusCritical])
+            (
+                New-IcingaCheck `
+                    -Name 'Status' `
+                    -Value $BackupObject.Status `
+                    -Translation $MSSQLProviderEnums.MSSQLDatabaseState `
+                    -ObjectExists $BackupObject.Status
+            ).WarnIfMatch($MSSQLProviderEnums.MSSQLDatabaseStateName[$DatabaseStatusWarning]).CritIfMatch($MSSQLProviderEnums.MSSQLDatabaseStateName[$DatabaseStatusCritical])
         );
 
         $CheckPackage.AddCheck($DBPackage);
