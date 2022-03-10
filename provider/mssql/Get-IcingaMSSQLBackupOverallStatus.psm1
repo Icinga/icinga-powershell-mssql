@@ -38,6 +38,10 @@
     the user the PowerShell is running with. If this is set and the user the PowerShell is
     running with can access to the MSSQL database you will not require to provide username
     and password
+.PARAMETER IncludeDays
+    Specifies the number of days to read the backup history from MSSQL. Over time, the history table can get quite
+    large and if there is no maintenance task in place to shrink it, this script could time out. By default the entire
+    history is evaluated.
 .INPUTS
     System.Array
 .OUTPUTS
@@ -56,7 +60,8 @@
         [securestring]$SqlPassword,
         [string]$SqlHost            = "localhost",
         [int]$SqlPort               = 1433,
-        [switch]$IntegratedSecurity = $FALSE
+        [switch]$IntegratedSecurity = $FALSE,
+        $IncludeDays                = $null
     );
 
     [bool]$NewSqlConnection = $FALSE;
@@ -82,10 +87,15 @@
                 DATEDIFF(MI, msdb.dbo.backupset.backup_start_date,  msdb.dbo.backupset.backup_finish_date) AS last_backup_duration_min
             FROM msdb.dbo.backupmediafamily
                 INNER JOIN msdb.dbo.backupset ON msdb.dbo.backupmediafamily.media_set_id = msdb.dbo.backupset.media_set_id
-                LEFT JOIN sys.databases ON sys.databases.name = msdb.dbo.backupset.database_name WHERE sys.databases.source_database_id IS NULL
-            ORDER BY
+                LEFT JOIN sys.databases ON sys.databases.name = msdb.dbo.backupset.database_name
+            WHERE sys.databases.source_database_id IS NULL";
+
+    if ($null -ne $IncludeDays) {
+        $Query = $Query + " AND msdb.dbo.backupset.backup_start_date >= DATEADD(day, -" + $IncludeDays + ", GETDATE())";
+    }
+    $Query = $Query + " ORDER BY
                 msdb.dbo.backupset.database_name,
-                msdb.dbo.backupset.backup_finish_date"
+                msdb.dbo.backupset.backup_finish_date";
 
     $SqlCommand              = New-IcingaMSSQLCommand -SqlConnection $SqlConnection -SqlQuery $Query;
     $Data                    = Send-IcingaMSSQLCommand -SqlCommand $SqlCommand;
