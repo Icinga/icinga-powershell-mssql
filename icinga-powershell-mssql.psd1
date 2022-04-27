@@ -15,6 +15,7 @@
         '.\compiled\icinga-powershell-mssql.ifw_compilation.psm1'
     )
     FunctionsToExport     = @(
+        'Import-IcingaPowerShellComponentMSSQL',
         'Invoke-IcingaCheckMSSQLBackupStatus',
         'Invoke-IcingaCheckMSSQLHealth',
         'Invoke-IcingaCheckMSSQLPerfCounter',
