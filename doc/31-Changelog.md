@@ -7,6 +7,14 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
+## 1.3.0 (2022-05-03)
+
+[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/5?closed=1)
+
+### Enhancements
+
+* [44](https://github.com/Icinga/icinga-powershell-mssql/pull/44) Adds support for Icinga for Windows v1.9.0 module isolation
+
 ## 1.2.0 (2021-06-02)
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/4?closed=1)

@@ -8,24 +8,23 @@
     Description       = 'A collection of Icinga PowerShell MSSQL plugins for the Icinga PowerShell Framework'
     PowerShellVersion = '4.0'
     RequiredModules   = @(
-        @{ModuleName = 'icinga-powershell-framework'; ModuleVersion = '1.5.0' },
+        @{ModuleName = 'icinga-powershell-framework'; ModuleVersion = '1.9.0' },
         @{ModuleName = 'icinga-powershell-plugins'; ModuleVersion = '1.5.0' }
     )
     NestedModules     = @(
-        '.\plugins\Invoke-IcingaCheckMSSQLBackupStatus.psm1',
-        '.\plugins\Invoke-IcingaCheckMSSQLHealth.psm1',
-        '.\plugins\Invoke-IcingaCheckMSSQLPerfCounter.psm1',
-        '.\plugins\Invoke-IcingaCheckMSSQLResource.psm1',
-        '.\provider\enums\Icinga_MSSQLProviderEnums.psm1',
-        '.\provider\mssql\Get-IcingaMSSQLBackupOverallStatus.psm1',
-        '.\provider\mssql\Get-IcingaMSSQLPerfCounterNameFromDBObject.psm1',
-        '.\provider\mssql\Get-IcingaMSSQLPerfCounterPathFromDBObject.psm1',
-        '.\provider\mssql\Get-IcingaMSSQLPerformanceCounter.psm1'
+        '.\compiled\icinga-powershell-mssql.ifw_compilation.psm1'
     )
-    FunctionsToExport = @('*')
-    CmdletsToExport   = @('*')
-    VariablesToExport = '*'
-    AliasesToExport   = @()
+    FunctionsToExport     = @(
+        'Invoke-IcingaCheckMSSQLBackupStatus',
+        'Invoke-IcingaCheckMSSQLHealth',
+        'Invoke-IcingaCheckMSSQLPerfCounter',
+        'Invoke-IcingaCheckMSSQLResource'
+    )
+    CmdletsToExport     = @(
+    )
+    VariablesToExport     = @(
+        'MSSQLProviderEnums'
+    )
     PrivateData       = @{
         PSData  = @{
             Tags         = @( 'icinga', 'icinga2', 'mssqlplugins', 'icingamssql', 'icinga2mssql', 'icingawindows')
@@ -41,3 +40,4 @@
     }
     HelpInfoURI       = 'https://github.com/Icinga/icinga-powershell-mssql'
 }
+
