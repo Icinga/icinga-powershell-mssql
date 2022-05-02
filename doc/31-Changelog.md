@@ -11,6 +11,10 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/5?closed=1)
 
+### Bugfixes
+
+* [34](https://github.com/Icinga/icinga-powershell-mssql/issues/34) Fixes `IncludeDatabase` not being used by `Invoke-IcingaCheckMSSQLBackupStatus`
+
 ### Enhancements
 
 * [44](https://github.com/Icinga/icinga-powershell-mssql/pull/44) Adds support for Icinga for Windows v1.9.0 module isolation
