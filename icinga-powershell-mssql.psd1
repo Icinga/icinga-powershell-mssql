@@ -1,5 +1,5 @@
 @{
-    ModuleVersion     = '1.3.0'
+    ModuleVersion     = '1.4.0'
     GUID              = '8441b44a-e105-42b7-82c9-8ecf69c13b8b'
     # ModuleToProcess   = 'icinga-powershell-mssql.psm1'
     Author            = 'Lord Hepipud, pdorschner'
@@ -33,7 +33,7 @@
             ProjectUri   = 'https://github.com/Icinga/icinga-powershell-mssql'
             ReleaseNotes = 'https://github.com/Icinga/icinga-powershell-mssql/releases'
         };
-        Version  = 'v1.3.0';
+        Version  = 'v1.4.0';
         Name     = 'Windows MSSQL';
         Type     = 'plugins';
         Function = '';
