@@ -133,23 +133,25 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         $DBPackage = New-IcingaCheckPackage -Name $Backup -OperatorAnd -Verbose $Verbosity;
 
         $DBPackage.AddCheck(
-            (New-IcingaCheck -Name 'Size' -Unit 'b' -Value $BackupObject.TotalBackupSize).WarnOutOfRange($TotalBackupSizeWarning).CritOutOfRange($TotalBackupSizeCritical)
+            (New-IcingaCheck -Name 'Size' -Unit 'b' -Value $BackupObject.TotalBackupSize -MetricIndex $Backup -MetricName 'size').WarnOutOfRange($TotalBackupSizeWarning).CritOutOfRange($TotalBackupSizeCritical)
         );
         $DBPackage.AddCheck(
-            (New-IcingaCheck -Name 'Average Size' -Unit 'b' -Value $BackupObject.AvgBackupSize).WarnOutOfRange($AvgBackupSizeWarning).CritOutOfRange($AvgBackupSizeCritical)
+            (New-IcingaCheck -Name 'Average Size' -Unit 'b' -Value $BackupObject.AvgBackupSize -MetricIndex $Backup -MetricName 'averagesize').WarnOutOfRange($AvgBackupSizeWarning).CritOutOfRange($AvgBackupSizeCritical)
         );
         $DBPackage.AddCheck(
-            (New-IcingaCheck -Name 'Log age' -Unit 's' -Value $BackupObject.LastBackupLogAge).WarnOutOfRange($LastBackupLogAgeWarning).CritOutOfRange($LastBackupLogAgeCritical)
+            (New-IcingaCheck -Name 'Log age' -Unit 's' -Value $BackupObject.LastBackupLogAge -MetricIndex $Backup -MetricName 'logage').WarnOutOfRange($LastBackupLogAgeWarning).CritOutOfRange($LastBackupLogAgeCritical)
         );
         $DBPackage.AddCheck(
-            (New-IcingaCheck -Name 'Age' -Unit 's' -Value $BackupObject.LastBackupAge).WarnOutOfRange($LastBackupAgeWarning).CritOutOfRange($LastBackupAgeCritical)
+            (New-IcingaCheck -Name 'Age' -Unit 's' -Value $BackupObject.LastBackupAge -MetricIndex $Backup -MetricName 'age').WarnOutOfRange($LastBackupAgeWarning).CritOutOfRange($LastBackupAgeCritical)
         );
         $DBPackage.AddCheck(
             (
                 New-IcingaCheck `
                     -Name 'Execution Time' `
                     -Unit 's' `
-                    -Value $BackupObject.ExecutionTime
+                    -Value $BackupObject.ExecutionTime `
+                    -MetricIndex $Backup `
+                    -MetricName 'executiontime'
             ).WarnOutOfRange($ExecutionTimeWarning).CritOutOfRange($ExecutionTimeCritical)
         );
         $DBPackage.AddCheck(
@@ -158,7 +160,9 @@ function Invoke-IcingaCheckMSSQLBackupStatus
                     -Name 'Status' `
                     -Value $BackupObject.Status `
                     -Translation $MSSQLProviderEnums.MSSQLDatabaseState `
-                    -ObjectExists $BackupObject.Status
+                    -ObjectExists $BackupObject.Status `
+                    -MetricIndex $Backup `
+                    -MetricName 'state'
             ).WarnIfMatch($MSSQLProviderEnums.MSSQLDatabaseStateName[$DatabaseStatusWarning]).CritIfMatch($MSSQLProviderEnums.MSSQLDatabaseStateName[$DatabaseStatusCritical])
         );
 

@@ -92,7 +92,8 @@ function Invoke-IcingaCheckMSSQLPerfCounter()
         -Verbose $Verbosity;
 
     foreach ($Entry in $PerfCounters) {
-        $FullName = Get-IcingaMSSQLPerfCounterPathFromDBObject -DBObject $Entry;
+        $FullName          = Get-IcingaMSSQLPerfCounterPathFromDBObject -DBObject $Entry;
+        $SerializedCounter = Get-IcingaPerformanceCounterDetails -Counter $FullName;
 
         Add-IcingaHashtableItem `
             -Hashtable $CheckPackages `
@@ -100,7 +101,7 @@ function Invoke-IcingaCheckMSSQLPerfCounter()
             -Value (New-IcingaCheckPackage -Name $Entry.object_name -OperatorAnd -Verbose $Verbosity) | Out-Null;
 
         <# https://docs.microsoft.com/en-us/sql/relational-databases/performance-monitor/sql-server-buffer-manager-object?view=sql-server-ver15 #>
-        $Check = (New-IcingaCheck -Name (Get-IcingaMSSQLPerfCounterNameFromDBObject -DBObject $Entry) -Value $Entry.cntr_value).WarnOutOfRange($Warning).CritOutOfRange($Critical);
+        $Check = (New-IcingaCheck -Name (Get-IcingaMSSQLPerfCounterNameFromDBObject -DBObject $Entry) -Value $Entry.cntr_value -MetricIndex $SerializedCounter.Category -MetricName $SerializedCounter.Counter).WarnOutOfRange($Warning).CritOutOfRange($Critical);
 
         if ($null -ne $Check) {
             # The check package for our counter category

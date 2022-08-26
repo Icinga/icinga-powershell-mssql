@@ -133,20 +133,21 @@ function Invoke-IcingaCheckMSSQLResource()
         -Verbose $Verbosity;
 
     foreach ($Entry in $PerfCounters) {
-        $FullName = Get-IcingaMSSQLPerfCounterPathFromDBObject -DBObject $Entry;
+        $FullName          = Get-IcingaMSSQLPerfCounterPathFromDBObject -DBObject $Entry;
+        $SerializedCounter = Get-IcingaPerformanceCounterDetails -Counter $FullName;
 
         <# https://docs.microsoft.com/en-us/sql/relational-databases/performance-monitor/sql-server-buffer-manager-object?view=sql-server-ver15 #>
         switch ($FullName) {
             '\SQLServer:Buffer Manager\page life expectancy' {
-                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value $Entry.cntr_value).WarnOutOfRange($PageLifeExpectancyWarning).CritOutOfRange($PageLifeExpectancyCritical);
+                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value $Entry.cntr_value -MetricIndex $SerializedCounter.Category -MetricName $SerializedCounter.Counter).WarnOutOfRange($PageLifeExpectancyWarning).CritOutOfRange($PageLifeExpectancyCritical);
                 break;
             };
             '\SQLServer:Buffer Manager\Buffer cache hit ratio' {
-                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value (($Entry.cntr_value * 1.0 / $BufferRatioBase) * 100) -Unit '%').WarnOutOfRange($BufferCacheHitRatioWarning).CritOutOfRange($BufferCacheHitRatioCritical);
+                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value (($Entry.cntr_value * 1.0 / $BufferRatioBase) * 100) -Unit '%' -MetricIndex $SerializedCounter.Category -MetricName $SerializedCounter.Counter).WarnOutOfRange($BufferCacheHitRatioWarning).CritOutOfRange($BufferCacheHitRatioCritical);
                 break;
             };
             '\SQLServer:Latches\Average Latch Wait Time (ms)' {
-                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value ($Entry.cntr_value / $LatchWaitTimeBase) -Unit 'ms').WarnOutOfRange($AverageLatchWaitTimeWarning).CritOutOfRange($AverageLatchWaitTimeCritical);
+                $Check = (New-IcingaCheck -Name $Entry.counter_name -Value ($Entry.cntr_value / $LatchWaitTimeBase) -Unit 'ms' -MetricIndex $SerializedCounter.Category -MetricName $SerializedCounter.Counter).WarnOutOfRange($AverageLatchWaitTimeWarning).CritOutOfRange($AverageLatchWaitTimeCritical);
                 break;
             };
         }
