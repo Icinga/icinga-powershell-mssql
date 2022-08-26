@@ -86,9 +86,9 @@ function Invoke-IcingaCheckMSSQLHealth()
     $MSSQLConnCheck    = $null;
 
     if ($null -ne $SqlConnection) {
-        $InstanceName      = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
+        $InstanceName   = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
         # Build a check based on our connection time
-        $MSSQLConnCheck = New-IcingaCheck -Name 'Connection Time' -Value (Get-IcingaTimer $MSSQLTimer).ElapsedMilliseconds -Unit 'ms';
+        $MSSQLConnCheck = New-IcingaCheck -Name 'Connection Time' -Value (Get-IcingaTimer $MSSQLTimer).ElapsedMilliseconds -Unit 'ms' -MetricIndex $InstanceName -MetricName 'connectiontime';
         $MSSQLConnCheck.WarnOutOfRange($Warning).CritOutOfRange($Critical) | Out-Null;
 
         if ([string]::IsNullOrEmpty($Instance)) {
@@ -96,7 +96,7 @@ function Invoke-IcingaCheckMSSQLHealth()
         }
     } else {
         # Build a check based on our connection time
-        $MSSQLConnCheck = New-IcingaCheck -Name 'DB Connection error' -Value $TRUE;
+        $MSSQLConnCheck = New-IcingaCheck -Name 'DB Connection error' -Value $TRUE -MetricIndex 'dbconnerror' -MetricName 'error';
         $MSSQLConnCheck.SetCritical() | Out-Null;
     }
 
@@ -118,7 +118,7 @@ function Invoke-IcingaCheckMSSQLHealth()
 
         # Now check if our instance name is either matching the exact service name of the instance name
         if ($service -eq 'MSSQLSERVER' -Or $service -eq $Instance -Or $service -eq ([string]::Format('MSSQL${0}', $Instance))) {
-            $ServiceCheck = New-IcingaCheck -Name $ServiceName -Value $StatusRaw -ObjectExists $service -Translation $ProviderEnums.ServiceStatusName;
+            $ServiceCheck = New-IcingaCheck -Name $ServiceName -Value $StatusRaw -ObjectExists $service -Translation $ProviderEnums.ServiceStatusName -MetricIndex $service -MetricName 'state';
             $ServiceCheck.CritIfNotMatch($ProviderEnums.ServiceStatus.Running) | Out-Null;
             $MSSQLCheckPackage.AddCheck($ServiceCheck);
         }
