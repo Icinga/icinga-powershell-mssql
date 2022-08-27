@@ -16,6 +16,7 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 * [42](https://github.com/Icinga/icinga-powershell-mssql/pull/42) Adds option for `IncludeDays` to reduce the amount of backup data generated [ronnybremer]
 * [46](https://github.com/Icinga/icinga-powershell-mssql/pull/46) Updates configuration and dependencies for Icinga for Windows v1.10.0
 * [47](https://github.com/Icinga/icinga-powershell-mssql/pull/47) Adds new performance data handling for Icinga for Windows v1.10.0 and provides basic Grafana dashboards and Icinga Web integration
+* [48](https://github.com/Icinga/icinga-powershell-mssql/pull/48) Improves MSSQL backup plugin by fetching backups more granular by minutes now instead of hours
 
 ## 1.3.0 (2022-05-03)
 

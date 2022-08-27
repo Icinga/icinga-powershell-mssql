@@ -51,7 +51,7 @@
 .NOTES
 #>
 
- function Get-IcingaMSSQLBackupOverallStatus
+function Get-IcingaMSSQLBackupOverallStatus
 {
    param (
         $SqlConnection              = $null,
@@ -78,12 +78,12 @@
                 msdb.dbo.backupset.is_damaged,
                 msdb.dbo.backupset.type,
                 msdb.dbo.backupset.backup_size,
-				msdb.dbo.backupset.backup_set_uuid,
+                msdb.dbo.backupset.backup_set_uuid,
                 msdb.dbo.backupmediafamily.physical_device_name,
                 msdb.dbo.backupmediafamily.device_type,
                 sys.databases.state,
                 sys.databases.recovery_model,
-                DATEDIFF(HH, msdb.dbo.backupset.backup_finish_date, GETDATE()) AS last_backup_hours,
+                DATEDIFF(MI, msdb.dbo.backupset.backup_finish_date, GETDATE()) AS last_backup_minutes,
                 DATEDIFF(MI, msdb.dbo.backupset.backup_start_date,  msdb.dbo.backupset.backup_finish_date) AS last_backup_duration_min
             FROM msdb.dbo.backupmediafamily
                 INNER JOIN msdb.dbo.backupset ON msdb.dbo.backupmediafamily.media_set_id = msdb.dbo.backupset.media_set_id
@@ -128,7 +128,7 @@
         }
 
         if ($Entry.type -eq 'L') {
-            $LastBackupLogAge = ($Entry.last_backup_hours * 60 * 60)
+            $LastBackupLogAge = ($Entry.last_backup_minutes * 60)
         } else {
             $LastBackupLogAge = 0;
         }
@@ -144,7 +144,7 @@
             'IsDamaged'        = $Entry.is_damaged;
             'Type'             = $Entry.type;
             'LastBackupLogAge' = [long]$LastBackupLogAge;
-            'LastBackupAge'    = (([long]$Entry.last_backup_hours) * 60 * 60);
+            'LastBackupAge'    = (([long]$Entry.last_backup_minutes) * 60);
             'ExecutionTime'    = (([long]$Entry.last_backup_duration_min) * 60);
             'Location'         = $Entry.physical_device_name;
             'Drive'            = $BackupDrive;
