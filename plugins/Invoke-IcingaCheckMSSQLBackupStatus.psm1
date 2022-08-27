@@ -77,6 +77,10 @@
     and password
 .PARAMETER NoPerfData
     Disables the performance data output of this plugin
+.PARAMETER IncludeDays
+    Specifies the number of days to read the backup history from MSSQL. Over time, the history table can get quite
+    large and if there is no maintenance task in place to shrink it, this script could time out. By default the entire
+    history is evaluated.
 .PARAMETER Verbosity
     Changes the behavior of the plugin output which check states are printed:
     0 (default): Only service checks/packages with state not OK will be printed
@@ -116,12 +120,13 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         [int]$SqlPort               = 1433,
         [switch]$IntegratedSecurity = $FALSE,
         [switch]$NoPerfData,
+        $IncludeDays                = $null,
         [ValidateSet(0, 1, 2, 3)]
         $Verbosity                  = 0
     )
 
     $SqlConnection         = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort;
-    $BackupSet             = Get-IcingaMSSQLBackupOverallStatus -SqlConnection $SqlConnection -IncludeDatabase $IncludeDatabase;
+    $BackupSet             = Get-IcingaMSSQLBackupOverallStatus -SqlConnection $SqlConnection -IncludeDatabase $IncludeDatabase -IncludeDays $IncludeDays;
     $InstanceName          = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
     $CheckPackage          = New-IcingaCheckPackage -Name ([string]::Format('MSSQL Backup ({0})', $InstanceName)) -OperatorAnd -Verbose $Verbosity;
 
