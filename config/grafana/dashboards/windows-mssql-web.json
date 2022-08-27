@@ -478,7 +478,7 @@
     "schemaVersion": 36,
     "style": "dark",
     "tags": [
-      "mssql,",
+      "mssql",
       "windows",
       "flux"
     ],
