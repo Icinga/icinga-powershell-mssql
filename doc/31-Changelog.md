@@ -18,6 +18,20 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 * [47](https://github.com/Icinga/icinga-powershell-mssql/pull/47) Adds new performance data handling for Icinga for Windows v1.10.0 and provides basic Grafana dashboards and Icinga Web integration
 * [48](https://github.com/Icinga/icinga-powershell-mssql/pull/48) Improves MSSQL backup plugin by fetching backups more granular by minutes now instead of hours
 
+### Grafana Dashboards
+
+#### New Dashboards
+
+* MSSQL Base
+* Windows-MSSQL-Web
+
+#### New Plugin Integrations
+
+* Invoke-IcingaCheckMSSQLBackupStatus
+* Invoke-IcingaCheckMSSQLHealth
+* Invoke-IcingaCheckMSSQLPerfCounter
+* Invoke-IcingaCheckMSSQLResource
+
 ## 1.3.0 (2022-05-03)
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/5?closed=1)
