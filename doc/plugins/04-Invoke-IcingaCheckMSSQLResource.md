@@ -1,4 +1,3 @@
-
 # Invoke-IcingaCheckMSSQLResource
 
 ## Description
@@ -61,3 +60,5 @@ Invoke-IcingaCheckMSSQLResource -IntegratedSecurity -SqlHost 'example.com';
 [OK] Check package "MSSQL Performance"
 | 'buffer_cache_hit_ratio'=2;; 'page_life_expectancy'=300;; 'average_latch_wait_time_ms'=389839;;    
 ```
+
+

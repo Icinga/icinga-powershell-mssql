@@ -1,4 +1,3 @@
-
 # Invoke-IcingaCheckMSSQLHealth
 
 ## Description
@@ -58,3 +57,5 @@ Invoke-IcingaCheckMSSQLHealth -IntegratedSecurity -SqlHost example.com;
 [OK] Check package "MSSQL Health"
 | 'connection_time'=26ms;;    
 ```
+
+

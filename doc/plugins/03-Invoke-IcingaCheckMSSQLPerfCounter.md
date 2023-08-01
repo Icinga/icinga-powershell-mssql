@@ -1,4 +1,3 @@
-
 # Invoke-IcingaCheckMSSQLPerfCounter
 
 ## Description
@@ -58,3 +57,5 @@ Invoke-IcingaCheckMSSQLHealth -IntegratedSecurity -SqlHost 'example.com' -Perfor
 [OK] Check package "MSSQL Performance Counter"
 | 'sqlserverbuffer_manager'=24;; 'sqlserverlatches'=387257;;    
 ```
+
+
