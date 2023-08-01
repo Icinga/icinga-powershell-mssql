@@ -7,9 +7,17 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
+## 1.6.0 (tbd)
+
+[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/8?closed=1)
+
+### Enhancements
+
 ## 1.5.0 (2023-08-01)
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/7?closed=1)
+
+### Enhancements
 
 * [51](https://github.com/Icinga/icinga-powershell-mssql/pull/51) Updates Icinga Director baskets and Icinga plain config for Icinga 2.14
 
