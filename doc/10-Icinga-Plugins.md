@@ -27,7 +27,7 @@ icinga> icinga { Invoke-IcingaCheckCPU -Warning 20 -Critical 40 -Core _Total -Th
 | Plugin Name | Description |
 | ---         | --- |
 | [Invoke-IcingaCheckMSSQLBackupStatus](plugins/01-Invoke-IcingaCheckMSSQLBackupStatus.md) | MSSQL plugin which checks for total backupsize, average backupsize, last backup age, last backup log age, last backup execution time, database status of a given database |
-| [Invoke-IcingaCheckMSSQLHealth](plugins/02-Invoke-IcingaCheckMSSQLHealth.md) | Checks if MSSQL services for a specific instance are running and if the connection to a database instance can be established |
-| [Invoke-IcingaCheckMSSQLPerfCounter](plugins/03-Invoke-IcingaCheckMSSQLPerfCounter.md) | Checks specified Performance Counter inside the MSSQL database by fetching counters by a given name and compares them to input thresholds |
 | [Invoke-IcingaCheckMSSQLResource](plugins/04-Invoke-IcingaCheckMSSQLResource.md) | MSSQL plugin which checks for page life expectancy, buffer cache hit ratio', average latch wait time (ms) Performance Counters |
+| [Invoke-IcingaCheckMSSQLPerfCounter](plugins/03-Invoke-IcingaCheckMSSQLPerfCounter.md) | Checks specified Performance Counter inside the MSSQL database by fetching counters by a given name and compares them to input thresholds |
+| [Invoke-IcingaCheckMSSQLHealth](plugins/02-Invoke-IcingaCheckMSSQLHealth.md) | Checks if MSSQL services for a specific instance are running and if the connection to a database instance can be established |
 

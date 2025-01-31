@@ -17,9 +17,9 @@
     FunctionsToExport     = @(
         'Import-IcingaPowerShellComponentMSSQL',
         'Invoke-IcingaCheckMSSQLBackupStatus',
-        'Invoke-IcingaCheckMSSQLHealth',
+        'Invoke-IcingaCheckMSSQLResource',
         'Invoke-IcingaCheckMSSQLPerfCounter',
-        'Invoke-IcingaCheckMSSQLResource'
+        'Invoke-IcingaCheckMSSQLHealth'
     )
     CmdletsToExport     = @(
     )
