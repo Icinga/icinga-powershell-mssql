@@ -10,13 +10,21 @@
     Checks specified Performance Counter inside the MSSQL database by fetching
     counters by a given name and compares them to input thresholds
 .EXAMPLE
-    PS>Invoke-IcingaCheckMSSQLHealth -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com' -PerformanceCounter '\SQLServer:Buffer Manager\Buffer cache hit ratio', '\SQLServer:Latches\Average Latch Wait Time (ms)';
-    [OK] Check package "MSSQL Performance Counter"
-    | 'sqlserverbuffer_manager'=22;; 'sqlserverlatches'=384199;;
+    PS>Invoke-IcingaCheckMSSQLPerfCounter -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com' -PerformanceCounter '\%:Buffer Manager%\Buffer cache hit ratio', '\%:Latches%\Average Latch Wait Time (ms)' -Verbosity 3;
+    [OK] MSSQL Performance Counter (MSSQLSERVER) (All must be [OK])
+    \_ [OK] SQLServer:Buffer Manager (All must be [OK])
+        \_ [OK] SQLServer:Buffer Manager: 62
+    \_ [OK] SQLServer:Latches (All must be [OK])
+        \_ [OK] SQLServer:Latches: 597
+| sqlserverbuffermanager::ifw_mssqlperfcounter::buffercachehitratio=62;;;; sqlserverlatches::ifw_mssqlperfcounter::averagelatchwaittimems=597;;;;
 .EXAMPLE
-    PS>Invoke-IcingaCheckMSSQLHealth -IntegratedSecurity -SqlHost 'example.com' -PerformanceCounter '\SQLServer:Buffer Manager\Buffer cache hit ratio', '\SQLServer:Latches\Average Latch Wait Time (ms)';
-    [OK] Check package "MSSQL Performance Counter"
-    | 'sqlserverbuffer_manager'=24;; 'sqlserverlatches'=387257;;
+    PS>Invoke-IcingaCheckMSSQLPerfCounter -IntegratedSecurity -SqlHost 'example.com' -PerformanceCounter '\%:Buffer Manager%\Buffer cache hit ratio', '\%:Latches%\Average Latch Wait Time (ms)' -Verbosity 3;
+    [OK] MSSQL Performance Counter (MSSQLSERVER) (All must be [OK])
+    \_ [OK] SQLServer:Buffer Manager (All must be [OK])
+        \_ [OK] SQLServer:Buffer Manager: 62
+    \_ [OK] SQLServer:Latches (All must be [OK])
+        \_ [OK] SQLServer:Latches: 597
+    | sqlserverbuffermanager::ifw_mssqlperfcounter::buffercachehitratio=62;;;; sqlserverlatches::ifw_mssqlperfcounter::averagelatchwaittimems=597;;;;
 .PARAMETER Warning
     The warning threshold of the Performance Counter return values
 .PARAMETER Critical

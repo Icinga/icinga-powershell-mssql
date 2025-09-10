@@ -10,13 +10,17 @@
     Checks if MSSQL services for a specific instance are running and if the connection
     to a database instance can be established
 .EXAMPLE
-    PS>Invoke-IcingaCheckMSSQLHealth -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost example.com;
-    [OK] Check package "MSSQL Health"
-    | 'connection_time'=19ms;;
+    PS>Invoke-IcingaCheckMSSQLHealth -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost example.com -Verbosity 3;
+    [OK] MSSQL Health (MSSQLSERVER) (All must be [OK])
+        \_ [OK] Connection Time: 0.153s
+        \_ [OK] Service "SQL Server (MSSQLSERVER) (MSSQLSERVER)": Running
+    | mssqlserver::ifw_mssqlhealth::connectiontime=0.153s;;;; mssqlserver::ifw_mssqlhealth::state=4;;4;;
 .EXAMPLE
-    PS>Invoke-IcingaCheckMSSQLHealth -IntegratedSecurity -SqlHost example.com;
-    [OK] Check package "MSSQL Health"
-    | 'connection_time'=26ms;;
+    PS>Invoke-IcingaCheckMSSQLHealth -IntegratedSecurity -SqlHost example.com -Verbosity 3;
+    [OK] MSSQL Health (MSSQLSERVER) (All must be [OK])
+        \_ [OK] Connection Time: 0.153s
+        \_ [OK] Service "SQL Server (MSSQLSERVER) (MSSQLSERVER)": Running
+    | mssqlserver::ifw_mssqlhealth::connectiontime=0.153s;;;; mssqlserver::ifw_mssqlhealth::state=4;;4;;
 .PARAMETER Warning
     The warning threshold for the connection time to the MSSQL database as time interval (ms, s, h, m)
 .PARAMETER Critical

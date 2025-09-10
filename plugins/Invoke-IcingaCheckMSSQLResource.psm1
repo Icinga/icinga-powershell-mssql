@@ -10,13 +10,23 @@
     MSSQL plugin which checks for page life expectancy, buffer cache hit ratio',
     average latch wait time (ms) Performance Counters
 .EXAMPLE
-    PS>Invoke-IcingaCheckMSSQLResource -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com';
-    [OK] Check package "MSSQL Performance"
-    | 'buffer_cache_hit_ratio'=62;; 'page_life_expectancy'=300;; 'average_latch_wait_time_ms'=389839;;
+    PS>Invoke-IcingaCheckMSSQLResource -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com' -Verbosity 3;
+    [OK] MSSQL Performance (MSSQLSERVER) (All must be [OK])
+    \_ [OK] SQLServer:Buffer Manager (All must be [OK])
+        \_ [OK] Buffer cache hit ratio: 100%
+        \_ [OK] Page life expectancy: 1772
+    \_ [OK] SQLServer:Latches (All must be [OK])
+        \_ [OK] Average Latch Wait Time (ms): 0.001515s
+    | sqlserverbuffermanager::ifw_mssqlresource::buffercachehitratio=100%;;;0;100 sqlserverbuffermanager::ifw_mssqlresource::pagelifeexpectancy=1772;;;; sqlserverlatches::ifw_mssqlresource::averagelatchwaittimems=0.001515s;;;;
 .EXAMPLE
-    PS>Invoke-IcingaCheckMSSQLResource -IntegratedSecurity -SqlHost 'example.com';
-    [OK] Check package "MSSQL Performance"
-    | 'buffer_cache_hit_ratio'=2;; 'page_life_expectancy'=300;; 'average_latch_wait_time_ms'=389839;;
+    PS>Invoke-IcingaCheckMSSQLResource -IntegratedSecurity -SqlHost 'example.com' -Verbosity 3;
+    [OK] MSSQL Performance (MSSQLSERVER) (All must be [OK])
+    \_ [OK] SQLServer:Buffer Manager (All must be [OK])
+        \_ [OK] Buffer cache hit ratio: 100%
+        \_ [OK] Page life expectancy: 1772
+    \_ [OK] SQLServer:Latches (All must be [OK])
+        \_ [OK] Average Latch Wait Time (ms): 0.001515s
+    | sqlserverbuffermanager::ifw_mssqlresource::buffercachehitratio=100%;;;0;100 sqlserverbuffermanager::ifw_mssqlresource::pagelifeexpectancy=1772;;;; sqlserverlatches::ifw_mssqlresource::averagelatchwaittimems=0.001515s;;;;
 .PARAMETER PageLifeExpectancyWarning
     Warning threshold for the page life expectancy which indicates the number of seconds a page will stay in the buffer pool without references.
 .PARAMETER PageLifeExpectancyCritical
