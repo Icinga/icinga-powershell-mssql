@@ -119,7 +119,7 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         [string]$SqlHost            = "localhost",
         [int]$SqlPort               = 1433,
         [switch]$IntegratedSecurity = $FALSE,
-        [switch]$NoPerfData,
+        [switch]$NoPerfData         = $FALSE,
         $IncludeDays                = $null,
         [ValidateSet(0, 1, 2, 3)]
         $Verbosity                  = 0
@@ -174,5 +174,5 @@ function Invoke-IcingaCheckMSSQLBackupStatus
         $CheckPackage.AddCheck($DBPackage);
     }
 
-    return (New-IcingaCheckResult -Check $CheckPackage -Compile);
+    return (New-IcingaCheckResult -Check $CheckPackage -Compile -NoPerfData $NoPerfData);
 }
