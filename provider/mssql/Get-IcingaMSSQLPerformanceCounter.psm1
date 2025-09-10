@@ -105,7 +105,7 @@ function Get-IcingaMSSQLPerformanceCounter
         if ([string]::IsNullOrEmpty($InstanceName)) {
             $PerformanceCounterQuery = (
                 [string]::Format(
-                    "{0}(object_name = '{1}' AND counter_name = '{2}') OR ",
+                    "{0}(object_name LIKE '{1}' AND counter_name = '{2}') OR ",
                     $PerformanceCounterQuery,
                     $Category,
                     $CounterObject
@@ -114,7 +114,7 @@ function Get-IcingaMSSQLPerformanceCounter
         } else {
             $PerformanceCounterQuery = (
                 [string]::Format(
-                    "{0}(object_name = '{1}' AND counter_name = '{2}' AND instance_name = '{3}') OR ",
+                    "{0}(object_name LIKE '{1}' AND counter_name = '{2}' AND instance_name = '{3}') OR ",
                     $PerformanceCounterQuery,
                     $Category,
                     $CounterObject,
