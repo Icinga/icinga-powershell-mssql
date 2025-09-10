@@ -11,20 +11,12 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/8?closed=1)
 
-## Bugfixes
+### Bugfixes
 
+* [#30](https://github.com/Icinga/icinga-powershell-mssql/issues/30) Fixes wrong example documentation for the MSSQL plugins
+* [#52](https://github.com/Icinga/icinga-powershell-mssql/pull/52) Fixes broken Icinga plain configuration
 * [#54](https://github.com/Icinga/icinga-powershell-mssql/issues/54) Fixes `Invoke-IcingaCheckMSSQLBackupStatus` which ignored the `-NoPerfData` flag
 * [#61](https://github.com/Icinga/icinga-powershell-mssql/pull/61) Update queries for performance counters to allow (and use) wildcards. Fixes #50
-
-### Enhancements
-
-## 1.5.1 (tbd)
-
-[Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/9?closed=1)
-
-## Bugfixes
-
-* [#52](https://github.com/Icinga/icinga-powershell-mssql/pull/52) Fixes broken Icinga plain configuration
 
 ## 1.5.0 (2023-08-01)
 
