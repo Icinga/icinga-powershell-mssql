@@ -99,11 +99,11 @@ function Invoke-IcingaCheckMSSQLResource()
     $PerfCounters = Get-IcingaMSSQLPerformanceCounter `
         -SqlConnection $SqlConnection `
         -PerformanceCounters @(
-            '\SQLServer:Buffer Manager\page life expectancy',
-            '\SQLServer:Buffer Manager\Buffer cache hit ratio',
-            '\SQLServer:Latches\Average Latch Wait Time (ms)',
-            '\SQLServer:Buffer Manager\Buffer cache hit ratio base',
-            '\SQLServer:Latches\Average Latch Wait Time Base'
+            '\%:Buffer Manager%\page life expectancy',
+            '\%:Buffer Manager%\Buffer cache hit ratio',
+            '\%:Latches%\Average Latch Wait Time (ms)',
+            '\%:Buffer Manager%\Buffer cache hit ratio base',
+            '\%:Latches%\Average Latch Wait Time Base'
         );
 
     [decimal]$BufferRatioBase   = 1;
@@ -137,23 +137,23 @@ function Invoke-IcingaCheckMSSQLResource()
         $SerializedCounter = Get-IcingaPerformanceCounterDetails -Counter $FullName;
 
         <# https://docs.microsoft.com/en-us/sql/relational-databases/performance-monitor/sql-server-buffer-manager-object?view=sql-server-ver15 #>
-        switch ($FullName) {
-            '\SQLServer:Buffer Manager\page life expectancy' {
+        switch -Wildcard ($FullName) {
+            '\*:Buffer Manager\page life expectancy' {
                 $Check = (New-IcingaCheck -Name $Entry.counter_name -Value $Entry.cntr_value -MetricIndex $SerializedCounter.Category -MetricName $SerializedCounter.Counter).WarnOutOfRange($PageLifeExpectancyWarning).CritOutOfRange($PageLifeExpectancyCritical);
                 break;
             };
-            '\SQLServer:Buffer Manager\Buffer cache hit ratio' {
+            '\*:Buffer Manager\Buffer cache hit ratio' {
                 $Check = (New-IcingaCheck -Name $Entry.counter_name -Value (($Entry.cntr_value * 1.0 / $BufferRatioBase) * 100) -Unit '%' -MetricIndex $SerializedCounter.Category -MetricName $SerializedCounter.Counter).WarnOutOfRange($BufferCacheHitRatioWarning).CritOutOfRange($BufferCacheHitRatioCritical);
                 break;
             };
-            '\SQLServer:Latches\Average Latch Wait Time (ms)' {
+            '\*:Latches\Average Latch Wait Time (ms)' {
                 $Check = (New-IcingaCheck -Name $Entry.counter_name -Value ($Entry.cntr_value / $LatchWaitTimeBase) -Unit 'ms' -MetricIndex $SerializedCounter.Category -MetricName $SerializedCounter.Counter).WarnOutOfRange($AverageLatchWaitTimeWarning).CritOutOfRange($AverageLatchWaitTimeCritical);
                 break;
             };
         }
 
         # Do not add these metrics to our check package of create checks for them
-        if ($FullName -eq '\SQLServer:Buffer Manager\Buffer cache hit ratio base' -Or $FullName -eq '\SQLServer:Latches\Average Latch Wait Time Base') {
+        if ($FullName -like '\*:Buffer Manager\Buffer cache hit ratio base' -Or $FullName -like '\*:Latches\Average Latch Wait Time Base') {
             continue;
         }
 

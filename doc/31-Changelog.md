@@ -11,6 +11,10 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/8?closed=1)
 
+## Bugfixes
+
+* [#61](https://github.com/Icinga/icinga-powershell-mssql/pull#61) Update queries for performance counters to allow (and use) wildcards. Fixes #50
+
 ### Enhancements
 
 ## 1.5.1 (tbd)
