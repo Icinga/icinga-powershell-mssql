@@ -13,7 +13,8 @@ Released closed milestones can be found on [GitHub](https://github.com/Icinga/ic
 
 ## Bugfixes
 
-* [#61](https://github.com/Icinga/icinga-powershell-mssql/pull#61) Update queries for performance counters to allow (and use) wildcards. Fixes #50
+* [#54](https://github.com/Icinga/icinga-powershell-mssql/issues/54) Fixes `Invoke-IcingaCheckMSSQLBackupStatus` which ignored the `-NoPerfData` flag
+* [#61](https://github.com/Icinga/icinga-powershell-mssql/pull/61) Update queries for performance counters to allow (and use) wildcards. Fixes #50
 
 ### Enhancements
 
