@@ -38,27 +38,37 @@ No special permissions required.
 ### Example Command 1
 
 ```powershell
-Invoke-IcingaCheckMSSQLResource -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com';
+Invoke-IcingaCheckMSSQLResource -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com' -Verbosity 3;
 ```
 
 ### Example Output 1
 
 ```powershell
-[OK] Check package "MSSQL Performance"
-| 'buffer_cache_hit_ratio'=62;; 'page_life_expectancy'=300;; 'average_latch_wait_time_ms'=389839;;    
+[OK] MSSQL Performance (MSSQLSERVER) (All must be [OK])
+\_ [OK] SQLServer:Buffer Manager (All must be [OK])
+    \_ [OK] Buffer cache hit ratio: 100%
+    \_ [OK] Page life expectancy: 1772
+\_ [OK] SQLServer:Latches (All must be [OK])
+    \_ [OK] Average Latch Wait Time (ms): 0.001515s
+| sqlserverbuffermanager::ifw_mssqlresource::buffercachehitratio=100%;;;0;100 sqlserverbuffermanager::ifw_mssqlresource::pagelifeexpectancy=1772;;;; sqlserverlatches::ifw_mssqlresource::averagelatchwaittimems=0.001515s;;;;    
 ```
 
 ### Example Command 2
 
 ```powershell
-Invoke-IcingaCheckMSSQLResource -IntegratedSecurity -SqlHost 'example.com';
+Invoke-IcingaCheckMSSQLResource -IntegratedSecurity -SqlHost 'example.com' -Verbosity 3;
 ```
 
 ### Example Output 2
 
 ```powershell
-[OK] Check package "MSSQL Performance"
-| 'buffer_cache_hit_ratio'=2;; 'page_life_expectancy'=300;; 'average_latch_wait_time_ms'=389839;;    
+[OK] MSSQL Performance (MSSQLSERVER) (All must be [OK])
+\_ [OK] SQLServer:Buffer Manager (All must be [OK])
+    \_ [OK] Buffer cache hit ratio: 100%
+    \_ [OK] Page life expectancy: 1772
+\_ [OK] SQLServer:Latches (All must be [OK])
+    \_ [OK] Average Latch Wait Time (ms): 0.001515s
+| sqlserverbuffermanager::ifw_mssqlresource::buffercachehitratio=100%;;;0;100 sqlserverbuffermanager::ifw_mssqlresource::pagelifeexpectancy=1772;;;; sqlserverlatches::ifw_mssqlresource::averagelatchwaittimems=0.001515s;;;;    
 ```
 
 

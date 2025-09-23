@@ -35,27 +35,31 @@ No special permissions required.
 ### Example Command 1
 
 ```powershell
-Invoke-IcingaCheckMSSQLHealth -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost example.com;
+Invoke-IcingaCheckMSSQLHealth -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost example.com -Verbosity 3;
 ```
 
 ### Example Output 1
 
 ```powershell
-[OK] Check package "MSSQL Health"
-| 'connection_time'=19ms;;    
+[OK] MSSQL Health (MSSQLSERVER) (All must be [OK])
+    \_ [OK] Connection Time: 0.153s
+    \_ [OK] Service "SQL Server (MSSQLSERVER) (MSSQLSERVER)": Running
+| mssqlserver::ifw_mssqlhealth::connectiontime=0.153s;;;; mssqlserver::ifw_mssqlhealth::state=4;;4;;    
 ```
 
 ### Example Command 2
 
 ```powershell
-Invoke-IcingaCheckMSSQLHealth -IntegratedSecurity -SqlHost example.com;
+Invoke-IcingaCheckMSSQLHealth -IntegratedSecurity -SqlHost example.com -Verbosity 3;
 ```
 
 ### Example Output 2
 
 ```powershell
-[OK] Check package "MSSQL Health"
-| 'connection_time'=26ms;;    
+[OK] MSSQL Health (MSSQLSERVER) (All must be [OK])
+    \_ [OK] Connection Time: 0.153s
+    \_ [OK] Service "SQL Server (MSSQLSERVER) (MSSQLSERVER)": Running
+| mssqlserver::ifw_mssqlhealth::connectiontime=0.153s;;;; mssqlserver::ifw_mssqlhealth::state=4;;4;;    
 ```
 
 

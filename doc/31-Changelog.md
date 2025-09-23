@@ -7,7 +7,7 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
-## 1.6.0 (tbd)
+## 1.6.0 (2025-09-23)
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/8?closed=1)
 

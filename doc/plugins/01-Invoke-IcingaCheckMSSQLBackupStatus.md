@@ -45,29 +45,41 @@ No special permissions required.
 ### Example Command 1
 
 ```powershell
-Invoke-IcingaMSSQLBackupOverallStatus -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com';
+Invoke-IcingaCheckMSSQLBackupStatus -SqlUsername 'username' -SqlPassword (ConvertTo-IcingaSecureString 'password') -SqlHost 'example.com' -Verbosity 3;
 ```
 
 ### Example Output 1
 
 ```powershell
-[OK] Check package "MSSQL Backup"
-| 'status'=0;6;5 'size'=10110976b;; 'execution_time'=0s;; 'age'=144000s;; 'average_size'=3370325.333333b;; 'status'=0;6;5 'size'=12664832b;;
-'execution_time'=0s;; 'age'=493200s;; 'average_size'=6332416b;; 'status'=0;6;5 'size'=33445888b;; 'execution_time'=0s;; 'age'=144000s;; 'average_size'=16722944b;;    
+[OK] MSSQL Backup (MSSQLSERVER) (All must be [OK])
+    \_ [OK] master (All must be [OK])
+    \_ [OK] Age: 951.34d
+    \_ [OK] Average Size: 5.39MiB
+    \_ [OK] Execution Time: 0us
+    \_ [OK] Log age: 0us
+    \_ [OK] Size: 16.17MiB
+    \_ [OK] Status: Online
+| master::ifw_mssqlbackupstatus::age=82196160s;;;; master::ifw_mssqlbackupstatus::averagesize=5651114B;;;; master::ifw_mssqlbackupstatus::executiontime=0s;;;; master::ifw_mssqlbackupstatus::logage=0s;;;; master::ifw_mssqlbackupstatus::size=16953340B;;;; master::ifw_mssqlbackupstatus::state=0;6;5;;    
 ```
 
 ### Example Command 2
 
 ```powershell
-Get-IcingaMSSQLBackupOverallStatus -IntegratedSecurity -SqlHost 'example.com' -IncludeDatabase 'ExampleDatabase','AnotherDatabase';
+Invoke-IcingaCheckMSSQLBackupStatus -IntegratedSecurity -SqlHost 'example.com' -IncludeDatabase 'msdb' -Verbosity 3;
 ```
 
 ### Example Output 2
 
 ```powershell
-[OK] Check package "MSSQL Backup"
-| 'status'=0;6;5 'size'=12664832b;; 'execution_time'=0s;; 'age'=493200s;; 'average_size'=6332416b;; 'status'=0;6;5 'size'=10110976b;;
-'execution_time'=0s;; 'age'=144000s;; 'average_size'=3370325.333333b;;    
+[OK] MSSQL Backup (MSSQLSERVER) (All must be [OK])
+\_ [OK] msdb (All must be [OK])
+    \_ [OK] Age: 951.34d
+    \_ [OK] Average Size: 16.34MiB
+    \_ [OK] Execution Time: 0us
+    \_ [OK] Log age: 0us
+    \_ [OK] Size: 49.03MiB
+    \_ [OK] Status: Online
+| msdb::ifw_mssqlbackupstatus::age=82196160s;;;; msdb::ifw_mssqlbackupstatus::averagesize=17138350B;;;; msdb::ifw_mssqlbackupstatus::executiontime=0s;;;; msdb::ifw_mssqlbackupstatus::logage=0s;;;; msdb::ifw_mssqlbackupstatus::size=51415040B;;;; msdb::ifw_mssqlbackupstatus::state=0;6;5;;    
 ```
 
 
