@@ -140,7 +140,7 @@ function Invoke-IcingaCheckMSSQLBackupStatus
     $SqlConnection         = Open-IcingaMSSQLConnection -Username $SqlUsername -Password $SqlPassword -Address $SqlHost -IntegratedSecurity:$IntegratedSecurity -Port $SqlPort;
     $BackupSet             = Get-IcingaMSSQLBackupOverallStatus -SqlConnection $SqlConnection -IncludeDatabase $IncludeDatabase -IncludeDays $IncludeDays;
     $InstanceName          = Get-IcingaMSSQLInstanceName -SqlConnection $SqlConnection;
-    $CheckPackage          = New-IcingaCheckPackage -Name ([string]::Format('MSSQL Backup ({0})', $InstanceName)) -OperatorAnd -Verbose $Verbosity;
+    $CheckPackage          = New-IcingaCheckPackage -Name ([string]::Format('MSSQL Backup ({0})', $InstanceName)) -OperatorAnd -Verbose $Verbosity -IgnoreEmptyPackage;
 
     Close-IcingaMSSQLConnection -SqlConnection $SqlConnection;
 
