@@ -7,9 +7,13 @@ documentation before upgrading to a new release.
 
 Released closed milestones can be found on [GitHub](https://github.com/Icinga/icinga-powershell-mssql/milestones?state=closed).
 
-## 1.7.0 (tbd)
+## 1.7.0 (2026-06-30)
 
 [Issue and PRs](https://github.com/Icinga/icinga-powershell-mssql/milestone/10?closed=1)
+
+### Bugfixes
+
+* [#66](https://github.com/Icinga/icinga-powershell-mssql/pull/66) Fixes MSSQL Backup check to use `INNER` instead of `LEFT` join to only include backup data for existing databases
 
 ## 1.6.1 (2025-11-06)
 
