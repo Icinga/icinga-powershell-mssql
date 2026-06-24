@@ -87,7 +87,7 @@ function Get-IcingaMSSQLBackupOverallStatus
                 DATEDIFF(MI, msdb.dbo.backupset.backup_start_date,  msdb.dbo.backupset.backup_finish_date) AS last_backup_duration_min
             FROM msdb.dbo.backupmediafamily
                 INNER JOIN msdb.dbo.backupset ON msdb.dbo.backupmediafamily.media_set_id = msdb.dbo.backupset.media_set_id
-                LEFT JOIN sys.databases ON sys.databases.name = msdb.dbo.backupset.database_name
+                INNER JOIN sys.databases ON sys.databases.name = msdb.dbo.backupset.database_name
             WHERE sys.databases.source_database_id IS NULL";
 
     if ($null -ne $IncludeDays) {
